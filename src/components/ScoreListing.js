@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ScoreListing = () => {
+const ScoreListing = (props) => {
   return (
     <div>
       <h3>UserName</h3>

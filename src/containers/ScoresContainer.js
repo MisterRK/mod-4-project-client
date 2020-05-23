@@ -2,19 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ScoreListing from '../components/ScoreListing'
 
-class ScoresContainer extends React.Component{
-
-  state = {
-    scores:[]
-  }
-
-  componentDidMount(){
-    fetch(`http://localhost:3001/api/v1/scores`)
-      .then(response => response.json())
-      .then(json => this.setState({scores: json}))
-  }
-  render(){
-    console.log("ScoresContainer state", this.state)
+const ScoresContainer = (props) => {
+    console.log("ScoresContainer props", props)
     return(
       <>
       <h1>You are on the high scores page</h1>
@@ -22,6 +11,5 @@ class ScoresContainer extends React.Component{
       <ScoreListing/>
       </>
     )
-  }
 }
 export default ScoresContainer
