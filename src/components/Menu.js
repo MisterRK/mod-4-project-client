@@ -11,6 +11,8 @@ const Menu = () => {
     <Link to="/how_to_play"><button>How To Play</button></Link>
     <br/>
     <Link to="/high_scores"><button>High Scores</button></Link>
+    <br/>
+    <Link to="/players"><button>Players</button></Link>
     </>
   )
 }
