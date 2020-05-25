@@ -39,7 +39,7 @@ class Scene extends React.Component {
         let boundaryLeft = Bodies.rectangle(10, 332, 25, 800, { isStatic: true })
         let boundaryRight = Bodies.rectangle(800, 332, 25, 800, { isStatic: true })
         let circle = Bodies.circle(250, 400, 25, { friction: 0, density: 0.1, frictionAir: .01 })
-        let paddle = Bodies.rectangle(10, 500, 800, 25, { isStatic: true, friction: 0 })
+        let paddle = Bodies.rectangle(200, 500, 800, 25, { isStatic: true, friction: 0 })
         let testPlatform = Bodies.rectangle(180, 100, 100, 40, { isStatic: true });
         this.state.rectangles.push(testPlatform)
         //add  stuffto world
