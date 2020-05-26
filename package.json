@@ -8,17 +8,8 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "matter-js": "^0.14.2",
-=======
     "foundation-sites": "^6.6.3",
->>>>>>> 50eb88872b7d9a4819a02977f3304603e3bdc85e
-=======
-
-    "matter-js": "^0.14.2",
-
->>>>>>> 7f50b1f14b1e2668a97260a12ccbab7630473bf9
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
