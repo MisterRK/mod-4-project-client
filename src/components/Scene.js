@@ -8,7 +8,7 @@ let Engine = Matter.Engine,
     Bodies = Matter.Bodies,
     Body = Matter.Body,
     Detector = Matter.Detector,
-    Pair = Matter.Pair
+    pi = 3.14159
 
 class Scene extends React.Component {
     state = {
@@ -17,9 +17,6 @@ class Scene extends React.Component {
         paddle: "",
         running: ""
     }
-
-
-
     //start of mounting
     componentDidMount() {
         //create engine and renderer
@@ -53,18 +50,22 @@ class Scene extends React.Component {
         let paddleCircle = [[paddle, circle]]
         //add, update, and delete rectangles over time
         //setInterval(()=>this.addRectangle(engine),1000)
-        setInterval(() => this.update(circle, paddleCircle, engine), .3)
+        setInterval(() => this.update(circle, paddle, paddleCircle, engine), .3)
         setInterval(this.deleteRectangles, .3)
     }
     //end of onMount
 
     //update function, called each .3 milliseconds
-    update = (circle, paddleCircle, engine) => {
+    update = (circle, paddle, paddleCircle, engine) => {
+
+        //this.lerpPosition(paddle,paddle.position.x,400,.005)
+        this.lerpRotation(paddle, this.convertDegreesToRadians(90), .005)
         for (const rect of this.state.rectangles) {
 
-            Body.setPosition(rect, { x: rect.position.x, y: (rect.position.y) + .3 })
-         if (this.isTouchingBottom(circle, rect, 25) && Detector.collisions(paddleCircle,engine)[0].collided) {
-               console.log("is Crush")
+
+            // Body.setPosition(rect, { x: rect.position.x, y: (rect.position.y) + .3 })
+            if (this.isTouchingBottom(circle, rect, 25) && Detector.collisions(paddleCircle, engine)[0].collided) {
+                console.log("is Crush")
             }
         }
     }
@@ -112,6 +113,10 @@ class Scene extends React.Component {
         Body.setPosition(body, { x: x, y: y })
 
     }
+    lerpRotation(body, target, amount) {
+        let angle = this.lerp(body.angle, target, amount)
+        Body.rotate(body, angle)
+    }
 
     //collision detection with bottom of platform
     //platform dimensions are
@@ -122,24 +127,24 @@ class Scene extends React.Component {
         let ry = rectangle.vertices[0].y
         let rHeight = this.calcRectangleHeight(rectangle)
         let rWidth = this.calcRectangleWidth(rectangle)
-        let testX= cx 
+        let testX = cx
         //always checking against bottom edge
-        let testY=ry+rHeight
+        let testY = ry + rHeight
         //set left or right depending on location
         testX = this.setTest(testX, cx, rx, rWidth)
         //calc distance between edges and circle
-        let distance= this.calcDistance(testX, testY, cx, cy)
-        if(distance <= radius){
+        let distance = this.calcDistance(testX, testY, cx, cy)
+        if (distance <= radius) {
             return true
         }
         return false
     }
 
-    setTest= (test, c, r, w)=>{
-        if(c<r){
+    setTest = (test, c, r, w) => {
+        if (c < r) {
             return r
-        }else if(c > r+w){
-            return r+w
+        } else if (c > r + w) {
+            return r + w
         }
         return test
     }
@@ -155,7 +160,12 @@ class Scene extends React.Component {
     calcRectangleWidth = (rectangle) => {
         return rectangle.vertices[2].x - rectangle.vertices[0].x
     }
-
+    convertDegreesToRadians = (degrees) => {
+        return degrees * (pi / 180)
+    }
+    convertRadiansToDegrees = (radians) => {
+        return radians * (180 / pi)
+    }
     render() {
         return <div ref="scene" />
     }
