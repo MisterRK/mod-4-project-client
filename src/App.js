@@ -10,7 +10,6 @@ import './App.css';
 class App extends React.Component {
 
   render(){
-    console.log("App level State", this.state)
     return (
       <div className="App">
       <Route exact path='/' component={Home}/>

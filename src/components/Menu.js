@@ -19,7 +19,7 @@ class Menu extends React.Component {
       .then(players => this.setState({players}))
   }
   render () {
-    // console.log("Menu State", this.state)
+    console.log("Menu State", this.state)
     return (
       <>
       <h1>Menu Component!</h1>
@@ -27,7 +27,7 @@ class Menu extends React.Component {
       <br/>
       <Link to="/how_to_play"><button>How To Play</button></Link>
       <br/>
-      <Link to="/high_scores"><button>High Scores</button></Link>
+      <Link to="/high_scores" state={this.state.scores}><button>High Scores</button></Link>
       <br/>
       <Link to="/players"><button>Players</button></Link>
       </>
