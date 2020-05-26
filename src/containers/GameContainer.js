@@ -1,5 +1,5 @@
 import React from "react"
-import Scene from "./Scene.js"
+import Scene from "../components/Scene.js"
 
 export default class GameContainer extends React.Component {
 
