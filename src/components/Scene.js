@@ -61,14 +61,13 @@ class Scene extends React.Component {
         //this.lerpPosition(paddle,paddle.position.x,400,.005)
         this.lerpRotation(paddle, this.convertDegreesToRadians(90), .005)
         for (const rect of this.state.rectangles) {
-
-
             // Body.setPosition(rect, { x: rect.position.x, y: (rect.position.y) + .3 })
             if (this.isTouchingBottom(circle, rect, 25) && Detector.collisions(paddleCircle, engine)[0].collided) {
                 console.log("is Crush")
             }
         }
     }
+    
     paddlePosition = (e) => {
         console.log("EE")
         if (e.keyCode === 68) {
@@ -113,7 +112,7 @@ class Scene extends React.Component {
         Body.setPosition(body, { x: x, y: y })
 
     }
-    lerpRotation(body, target, amount) {
+    lerpRotation=(body, target, amount)=>{
         let angle = this.lerp(body.angle, target, amount)
         Body.rotate(body, angle)
     }
