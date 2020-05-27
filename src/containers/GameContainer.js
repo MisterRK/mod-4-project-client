@@ -14,9 +14,6 @@ export default class GameContainer extends React.Component {
         score: 0,
         finalScore: 0,
     }
-//The score and the timer need to have access to state here.
-//When you press start game the timer and the score need to start incrementing
-//
 
 startGame = () => {
     if(this.state.gameRunning === false){
@@ -48,7 +45,7 @@ render(){
     console.log(this.state.finalScore)
     return(
         <div className="grid-container">
-            <SimpleDialog></SimpleDialog>
+            {/* <SimpleDialog></SimpleDialog> */}
             <div className='game-canvas'>
                 {this.state.gameRunning && this.state.isCrushed === false ?
                 <Scene stopGame={this.crushed} onKeyDown={()=>this.paddlePosition()} class='game-canvas' gameRunning={this.state.gameRunning}></Scene>

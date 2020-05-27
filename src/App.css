@@ -90,6 +90,8 @@ button.eightbit-btn:active{
 
 .game-canvas{
   grid-area: main;
+  width: 800px;
+  height: 700px;
 }
 
 .timer-display{
