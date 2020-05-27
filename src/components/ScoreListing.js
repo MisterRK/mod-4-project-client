@@ -1,10 +1,11 @@
 import React from 'react';
 
 const ScoreListing = (props) => {
+  console.log("ScoreListing Props =>", props)
   return (
-    <div>
-      <h3>UserName</h3>
-      <h6>Score</h6>
+    <div className='card'>
+      <h3>{props.userName}</h3>
+      <h6>{props.value}</h6>
     </div>
   )
 }

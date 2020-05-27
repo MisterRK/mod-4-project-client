@@ -2,7 +2,7 @@ import React from 'react'
 
 const Logo = () => {
   return(
-    <h1>This is where the logo will go!</h1>
+    <h1 className="logo">Whatever Our Game is Called</h1>
   )
 }
 
