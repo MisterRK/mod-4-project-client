@@ -8,17 +8,14 @@ let Engine = Matter.Engine,
     Bodies = Matter.Bodies,
     Body = Matter.Body,
     Detector = Matter.Detector,
-    pi = 3.14159
-
+    pi = 3.14159,
+    rotateAmount = 100
 class Scene extends React.Component {
     state = {
         rectangles: [],
         render: "",
         paddle: "",
-        running: "",
-        engine: "",
-        ball: "", 
-        paddleCircle: ""
+        running: ""
     }
     //start of mounting
     componentDidMount() {
@@ -37,19 +34,22 @@ class Scene extends React.Component {
         })
         //add Stuff!!
         let boundaryLeft = Bodies.rectangle(10, 332, 25, 800, { isStatic: true })
-        let boundaryRight = Bodies.rectangle(800, 332, 25, 800, { isStatic: true })
+        let boundaryRight = Bodies.rectangle(600, 332, 25, 800, { isStatic: true })
         let circle = Bodies.circle(250, 400, 25, { friction: 0, density: 0.1, frictionAir: .01 })
-        let paddle = Bodies.rectangle(200, 500, 800, 25, { isStatic: true, friction: 0 })
-        let testPlatform = Bodies.rectangle(100, 100, 100, 40, { isStatic: true });
+        let paddle = Bodies.rectangle(300, 500, 800, 25, { isStatic: true, friction: 0 })
+        let testPlatform = Bodies.rectangle(180, 100, 100, 40, { isStatic: true });
         this.state.rectangles.push(testPlatform)
-
         //add  stuffto world
         World.add(engine.world, [circle, boundaryRight, boundaryLeft, paddle, testPlatform])
         //run engine and renderer
         Engine.run(engine)
         Render.run(render)
+        //update state
+        this.setState({ render: render, paddle: paddle, ball: circle, running: true })
         //create collision pair 
         let paddleCircle = [[paddle, circle]]
+        //add, update, and delete rectangles over time
+        //setInterval(()=>this.addRectangle(engine),1000)
 
         //update state
         this.setState({ 
@@ -62,30 +62,31 @@ class Scene extends React.Component {
 
         //add, update, and delete rectangles over time after a three second delay
             this.addRectanglesInterval = setInterval(() => this.addRectangle(engine), 1000)
-            this.updateInterval = setInterval(() => this.update(circle, paddle, paddleCircle, engine), .3)
-            this.deleteRectanglesInterval = setInterval(this.deleteRectangles, .3)}, 3000)
+            this.updateInterval = setInterval(() => this.update(circle, paddle, paddleCircle, engine), 33.3)
+            this.deleteRectanglesInterval = setInterval(() => this.deleteRectangles, 33.3)
 
 
     }
     //end of onMount
-
-
-    //update function, called each .3 milliseconds
+    componentWillUnmount() {
+        clearInterval()
+    }
+    //update function, called each 33.3 milliseconds
     update = (circle, paddle, paddleCircle, engine) => {
-
-        this.lerpPosition(paddle,paddle.position.x,400,.005)
-        // this.lerpRotation(paddle, this.convertDegreesToRadians(90), .005)
-        for (const rect of this.state.rectangles) {
-
-        // makes the rectangles fall from the top//
-        Body.setPosition(rect, { x: rect.position.x, y: (rect.position.y) + .3 })
-
-            if (this.isTouchingBottom(circle, rect, 25) && Detector.collisions(paddleCircle, engine)[0].collided) {
-                console.log("is Crush")
-                this.props.stopGame()
-                clearInterval(this.updateInterval)
-                clearInterval(this.deleteRectanglesInterval)
-                clearInterval(this.addRectanglesInterval)
+        console.log(this.props.mouth)
+        if (this.props.face === true) {
+            this.setRotation(paddle, this.props.angle)
+            if (this.props.mouth >= 10) {
+                this.lerpPosition(paddle, paddle.position.x, 400, .08)
+                
+            } else {
+                this.lerpPosition(paddle, paddle.position.x, 500, .08)
+            }
+            for (const rect of this.state.rectangles) {
+                // Body.setPosition(rect, { x: rect.position.x, y: (rect.position.y) + .3 })
+                if (this.isTouchingBottom(circle, rect, 25) && Detector.collisions(paddleCircle, engine)[0].collided) {
+                    console.log("is Crush")
+                }
             }
         }
     }
@@ -120,23 +121,31 @@ class Scene extends React.Component {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
-
-
     //lerpp
     lerp = (start, end, amount) => {
         return (1 - amount) * start + amount * end
     }
+
+    //transformation functions
+
     //lerp position between two points
     lerpPosition = (body, targetX, targetY, amount) => {
         let x = this.lerp(body.position.x, targetX, amount)
         let y = this.lerp(body.position.y, targetY, amount)
-        // Body.setPosition(rect, {x:rect.position.x, y: (rect.position.y)+.3})
+        //Body.setPosition(rect, {x:rect.position.x, y: (rect.position.y)+.3})
         Body.setPosition(body, { x: x, y: y })
 
     }
-    lerpRotation(body, target, amount) {
+    lerpRotation = (body, target, amount) => {
         let angle = this.lerp(body.angle, target, amount)
-        Body.rotate(body, angle)
+        Body.setAngle(body, angle)
+    }
+
+    setRotation = (body, angle) => {
+        let constrainAngle= this.constrain(angle, -50,50)
+        console.log(constrainAngle)
+        let radians = this.convertDegreesToRadians(this.mapRange(angle, 1))
+        Body.setAngle(body, radians)
     }
 
     //collision detection with bottom of platform
@@ -160,7 +169,7 @@ class Scene extends React.Component {
         }
         return false
     }
-
+    //calculation functions`
     setTest = (test, c, r, w) => {
         if (c < r) {
             return r
@@ -169,7 +178,6 @@ class Scene extends React.Component {
         }
         return test
     }
-    //calculation functions
     calcDistance = (x1, y1, x2, y2) => {
         let distX = x1 - x2
         let distY = y1 - y2
@@ -188,11 +196,23 @@ class Scene extends React.Component {
         return radians * (180 / pi)
     }
 
-
+    mapRange = (value, scaleFactor) => {
+        if (value >= 0) {
+            return scaleFactor * (90 - value)
+        } else {
+            return -1 * scaleFactor * (90 + value)
+        }
+    }
+    constrain=(value, min, max)=>{
+        if(value>max){
+            return max
+        }else if(value<min){
+            return min
+        }
+    }
     render() {
         return <div ref="scene" />
     }
-
 }
 export default Scene
 
