@@ -1,4 +1,5 @@
 import React from 'react'
+//some comment to try out the merge
 
 class CurrentScore extends React.Component{
 
