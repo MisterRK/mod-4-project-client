@@ -61,7 +61,6 @@ class Scene extends React.Component {
         })
 
         //add, update, and delete rectangles over time after a three second delay
-        setTimeout(() => {
             this.addRectanglesInterval = setInterval(() => this.addRectangle(engine), 1000)
             this.updateInterval = setInterval(() => this.update(circle, paddle, paddleCircle, engine), .3)
             this.deleteRectanglesInterval = setInterval(this.deleteRectangles, .3)}, 3000)

@@ -48,7 +48,6 @@ render(){
     console.log(this.state.finalScore)
     return(
         <div className="grid-container">
-            <SimpleDialog></SimpleDialog>
             <div className='game-canvas'>
                 {this.state.gameRunning && this.state.isCrushed === false ?
                 <Scene stopGame={this.crushed} onKeyDown={()=>this.paddlePosition()} class='game-canvas' gameRunning={this.state.gameRunning}></Scene>
