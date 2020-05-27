@@ -2,7 +2,7 @@ import React from "react"
 import Scene from "../components/Scene.js"
 import Timer from "../components/Timer.js"
 import CurrentScore from "../components/CurrentScore.js"
-import SimpleDialog from "../components/SimpleDialog"
+import Video from '../components/Video'
 
 
 
@@ -13,10 +13,20 @@ export default class GameContainer extends React.Component {
         isCrushed: false,
         score: 0,
         finalScore: 0,
+        angle: 0,
+        mouth: 0,
+        faceIsPresent: false
     }
-//The score and the timer need to have access to state here.
-//When you press start game the timer and the score need to start incrementing
-//
+
+    setFace = (value) => {
+        this.setState({ faceIsPresent: value })
+    }
+    setAngle = (value) => {
+        this.setState({ angle: value })
+    }
+    setMouth=(value)=>{
+        this.setState({ mouth: value })
+    }
 
 startGame = () => {
     if(this.state.gameRunning === false){
@@ -45,16 +55,32 @@ closeModal = () => {
 }
 
 render(){
-    console.log(this.state.finalScore)
+    // console.log(this.state.finalScore)
     return(
         <div className="grid-container">
             <div className='game-canvas'>
-                {this.state.gameRunning && this.state.isCrushed === false ?
+                <Scene 
+                stopGame={this.crushed} 
+                gameRunning={this.state.gameRunning} 
+                mouth={this.state.mouth}
+                face={this.state.faceIsPresent}
+                angle={this.state.angle}
+                ></Scene>
+
+                {/* {this.state.gameRunning && this.state.isCrushed === false ?
                 <Scene stopGame={this.crushed} onKeyDown={()=>this.paddlePosition()} class='game-canvas' gameRunning={this.state.gameRunning}></Scene>
                 :
                 null
-            }
+            } */}
+
             
+            </div>
+            <div>
+                <Video
+                setMouth={this.setMouth}
+                setRotation={this.setAngle}
+                setFace={this.setFace}
+                />
             </div>
             <div className="timer-display">
                 {this.state.gameRunning === true && this.state.isCrushed === false ?

@@ -22,9 +22,9 @@ class Menu extends React.Component {
           <button className='eightbit-btn'>High Scores</button>
         </Link>
       <br/>
-        <Link to="/players">
+        {/* <Link to="/players">
           <button className='eightbit-btn'>Players</button>
-        </Link>
+        </Link> */}
       </>
     )
   }
